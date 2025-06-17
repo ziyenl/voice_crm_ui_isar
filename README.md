@@ -6,7 +6,7 @@
 15-June-2025 -integrate ISAR 3.0.x
 
 # Project Structure
-<img alt="screenshot" src="https://github.com/ziyenl/voice_crm_ui_upgrade/blob/main/screenshot/project_structure.PNG">
+<img alt="screenshot" src="https://github.com/ziyenl/voice_crm_ui_isar/blob/main/screenshot/project_structure.PNG">
 
 # Simplified Architecture
-<img alt="screenshot" src="https://github.com/ziyenl/voice_crm_ui_upgrade/blob/main/screenshot/simplified_architecture.PNG">
+<img alt="screenshot" src="https://github.com/ziyenl/voice_crm_ui_isar/blob/main/screenshot/simplified_architecture.PNG">
