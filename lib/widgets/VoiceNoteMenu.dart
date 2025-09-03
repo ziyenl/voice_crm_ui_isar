@@ -1,12 +1,11 @@
 // widgets/VoiceNoteMenu.dart
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart'; // For HapticFeedback
+import 'package:flutter/services.dart'; 
 import '../types/types.dart';
 import '../constants/layout.dart';
 import '../constants/colors.dart';
 
-/// A modal menu widget for performing actions on a voice note.
 class VoiceNoteMenu extends StatelessWidget {
   final VoidCallback onClose;
   final Function(VoiceNoteAction action) onAction;
@@ -21,38 +20,37 @@ class VoiceNoteMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Define the list of menu actions with their properties
     final List<Map<String, dynamic>> menuActions = [
       {
-        'icon': Icons.description, // Equivalent to FileText
+        'icon': Icons.description, 
         'label': 'Transcribe',
         'action': VoiceNoteAction.transcribe,
         'color': AppColors.primary700,
         'disabled': voiceNote.isTranscribed,
       },
       {
-        'icon': Icons.cloud_upload, // Equivalent to Upload
+        'icon': Icons.cloud_upload,
         'label': 'Send to Cloud',
         'action': VoiceNoteAction.upload,
         'color': AppColors.accent400,
         'disabled': voiceNote.isUploaded,
       },
       {
-        'icon': Icons.tag, // Equivalent to Tag
+        'icon': Icons.tag, 
         'label': 'Add Tags',
         'action': VoiceNoteAction.tag,
         'color': AppColors.warning500,
         'disabled': false,
       },
       {
-        'icon': Icons.star, // Equivalent to Star
+        'icon': Icons.star, 
         'label': voiceNote.isFavorite ? 'Remove Favorite' : 'Add Favorite',
         'action': voiceNote.isFavorite ? VoiceNoteAction.unfavorite : VoiceNoteAction.favorite,
         'color': AppColors.warning500,
-        'fill': voiceNote.isFavorite, // Used to determine if the star icon should be filled
+        'fill': voiceNote.isFavorite, 
       },
       {
-        'icon': Icons.delete_forever, // Equivalent to Trash2
+        'icon': Icons.delete_forever, 
         'label': 'Delete',
         'action': VoiceNoteAction.delete,
         'color': AppColors.error500,
@@ -61,16 +59,16 @@ class VoiceNoteMenu extends StatelessWidget {
     ];
 
     return Dialog(
-      backgroundColor: Colors.transparent, // Make the dialog background transparent
-      elevation: 0, // Remove default dialog elevation
-      insetPadding: EdgeInsets.symmetric(horizontal: Layout.spacing.lg), // Padding from screen edges
+      backgroundColor: Colors.transparent, 
+      elevation: 0, 
+      insetPadding: EdgeInsets.symmetric(horizontal: Layout.spacing.lg), 
       child: Material(
         color: Colors.white,
         borderRadius: Layout.borderRadius.md,
-        elevation: 8, // Mimic the shadow.lg from Layout.js
-        shadowColor: Colors.black.withOpacity(0.12), // Shadow color
+        elevation: 8, 
+        shadowColor: Colors.black.withOpacity(0.12), 
         child: Column(
-          mainAxisSize: MainAxisSize.min, // Wrap content tightly
+          mainAxisSize: MainAxisSize.min, 
           children: menuActions.map((item) {
             final bool isDisabled = item['disabled'] as bool? ?? false;
             final bool isDanger = item['danger'] as bool? ?? false;
@@ -86,9 +84,9 @@ class VoiceNoteMenu extends StatelessWidget {
 
             return InkWell(
               onTap: isDisabled
-                  ? null // Disable tap if item is disabled
+                  ? null 
                   : () {
-                      HapticFeedback.lightImpact(); // Add haptic feedback
+                      HapticFeedback.lightImpact(); 
                       onAction(item['action'] as VoiceNoteAction);
                     },
               child: Container(
@@ -97,7 +95,7 @@ class VoiceNoteMenu extends StatelessWidget {
                   border: Border(
                     bottom: BorderSide(
                       color: menuActions.indexOf(item) == menuActions.length - 1
-                          ? Colors.transparent // No border for the last item
+                          ? Colors.transparent 
                           : AppColors.neutral200,
                       width: 1.0,
                     ),
