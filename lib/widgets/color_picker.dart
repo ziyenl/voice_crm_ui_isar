@@ -3,13 +3,11 @@
 import 'package:flutter/material.dart';
 import 'package:voice_crm_ui_upgrade/constants/layout.dart';
 import 'package:voice_crm_ui_upgrade/constants/colors.dart';
-import 'package:voice_crm_ui_upgrade/utils/color_utils.dart'; // For hexToColor and getContrastTextColor
-
-/// A widget for selecting a color from a predefined list.
+import 'package:voice_crm_ui_upgrade/utils/color_utils.dart'; 
 class ColorPicker extends StatelessWidget {
-  final List<String> colors; // List of hex color strings (e.g., '#RRGGBB')
-  final String selectedColor; // The currently selected hex color string
-  final ValueChanged<String> onSelectColor; // Callback when a color is selected
+  final List<String> colors; 
+  final String selectedColor; 
+  final ValueChanged<String> onSelectColor; 
 
   const ColorPicker({
     super.key,
@@ -28,7 +26,7 @@ class ColorPicker extends StatelessWidget {
         final Color displayColor = hexToColor(colorHex);
 
         return GestureDetector(
-          onTap: () => onSelectColor(colorHex), // Handle tap to select color
+          onTap: () => onSelectColor(colorHex), 
           child: Container(
             width: 32,
             height: 32,
@@ -36,7 +34,7 @@ class ColorPicker extends StatelessWidget {
               color: displayColor,
               shape: BoxShape.circle,
               border: Border.all(
-                color: isSelected ? AppColors.neutral800 : Colors.transparent, // Highlight selected
+                color: isSelected ? AppColors.neutral800 : Colors.transparent, 
                 width: isSelected ? 2.5 : 0,
               ),
               boxShadow: isSelected
@@ -52,10 +50,10 @@ class ColorPicker extends StatelessWidget {
             child: isSelected
                 ? Icon(
                     Icons.check, // Material icon for checkmark
-                    color: getContrastTextColor(colorHex), // Ensures contrast for the checkmark
+                    color: getContrastTextColor(colorHex),
                     size: 20,
                   )
-                : null, // No checkmark if not selected
+                : null, 
           ),
         );
       }).toList(),
