@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:voice_crm_ui_upgrade/constants/colors.dart'; 
 
 class TabBarIcon extends StatefulWidget {
-  final IconData icon; // Use IconData for Material Icons
+  final IconData icon; 
   final bool focused;
   final String label;
 
