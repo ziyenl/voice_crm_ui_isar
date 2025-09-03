@@ -2,12 +2,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:voice_crm_ui_upgrade/constants/layout.dart';
-import 'package:voice_crm_ui_upgrade/utils/color_utils.dart'; // For hexToColor and getContrastTextColor
+import 'package:voice_crm_ui_upgrade/utils/color_utils.dart'; 
 import 'package:voice_crm_ui_upgrade/constants/app_shadows.dart';
-import 'package:flutter_animate/flutter_animate.dart'; // For animations
-import 'package:font_awesome_flutter/font_awesome_flutter.dart'; // For X icon
+import 'package:flutter_animate/flutter_animate.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart'; 
 
-/// A customizable badge widget to display a single tag.
 class TagBadge extends StatelessWidget {
   final String label;
   final String color; // Hex color string, e.g., '#RRGGBB'
@@ -50,7 +49,7 @@ class TagBadge extends StatelessWidget {
             child: GestureDetector(
               onTap: onRemove,
               child: FaIcon(
-                FontAwesomeIcons.xmark, // 'X' icon from Font Awesome
+                FontAwesomeIcons.xmark,
                 size: small ? 12 : 16,
                 color: textColor,
               ),
@@ -59,12 +58,7 @@ class TagBadge extends StatelessWidget {
       ],
     );
 
-    // Apply animations using flutter_animate if it's clickable
     if (isClickable) {
-         // --- WORKAROUND FOR 'OFFSET?' ERROR ---
-      // This is a workaround if your Flutter environment or specific flutter_animate installation
-      // is incorrectly demanding an Offset for ScaleEffect's begin/end parameters.
-      // Normally, these parameters expect a double for the scale factor.
       final double beginScaleFactor = isSelected ? 1.0 : 1.05;
       final double endScaleFactor = isSelected ? 1.05 : 1.0;
 
@@ -73,8 +67,6 @@ class TagBadge extends StatelessWidget {
           ScaleEffect(
             duration: 150.ms,
             curve: Curves.easeOut,
-            // Using Offset(factor, factor) to satisfy the compiler if it expects Offset.
-            // This assumes uniform scaling behavior when an Offset is provided.
             begin: Offset(beginScaleFactor, beginScaleFactor),
             end: Offset(endScaleFactor, endScaleFactor),
           ),
@@ -85,7 +77,7 @@ class TagBadge extends StatelessWidget {
             end: isSelected ? 1.0 : 0.8,
           ),
         ],
-        target: isSelected ? 1.0 : 0.0, // Control animation based on isSelected
+        target: isSelected ? 1.0 : 0.0, 
         child: tagContent,
       );
     }
