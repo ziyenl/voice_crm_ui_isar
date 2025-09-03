@@ -9,7 +9,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class TagBadge extends StatelessWidget {
   final String label;
-  final String color; // Hex color string, e.g., '#RRGGBB'
+  final String color; 
   final VoidCallback? onRemove;
   final bool small;
   final bool isSelected;
@@ -93,7 +93,7 @@ class TagBadge extends StatelessWidget {
         decoration: BoxDecoration(
           color: badgeColor,
           borderRadius: BorderRadius.circular(Layout.borderRadiusFull),
-          boxShadow: isClickable && !isSelected // Only show shadow if clickable and not currently selected
+          boxShadow: isClickable && !isSelected
               ? [AppShadows.sm]
               : [],
         ),
