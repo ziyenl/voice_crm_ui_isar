@@ -187,7 +187,7 @@ class _VoiceNoteCardState extends State<VoiceNoteCard> with SingleTickerProvider
                                     fontSize: 18,
                                     color: AppColors.neutral800,
                                   ),
-                                  overflow: TextOverflow.ellipsis, // Truncate long titles
+                                  overflow: TextOverflow.ellipsis, 
                                 ),
                               ),
                               if (widget.voiceNote.isFavorite)
