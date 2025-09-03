@@ -1,7 +1,7 @@
 // lib/widgets/logo.dart
 
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart'; // For Mic icon
+import 'package:font_awesome_flutter/font_awesome_flutter.dart'; 
 import 'package:voice_crm_ui_upgrade/constants/colors.dart';
 
 enum LogoSize { small, large }
