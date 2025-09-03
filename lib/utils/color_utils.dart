@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 Color hexToColor(String hexColor) {
   hexColor = hexColor.toUpperCase().replaceAll("#", "");
   if (hexColor.length == 6) {
-    hexColor = "FF" + hexColor; // Add full opacity (FF) if not provided (AARRGGBB)
+    hexColor = "FF" + hexColor; 
   }
   return Color(int.parse(hexColor, radix: 16));
 }
