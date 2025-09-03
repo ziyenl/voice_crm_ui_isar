@@ -2,10 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:voice_crm_ui_upgrade/screens/tagging_screen.dart';
-import 'package:voice_crm_ui_upgrade/widgets/tab_bar_icon.dart'; // Your custom TabBarIcon
-import 'package:voice_crm_ui_upgrade/constants/colors.dart'; // For custom colors
-import 'package:voice_crm_ui_upgrade/screens/voice_notes_screen.dart'; // Your Voice Inbox screen
-import 'dart:io' show Platform; // For platform-specific height adjustments
+import 'package:voice_crm_ui_upgrade/widgets/tab_bar_icon.dart'; 
+import 'package:voice_crm_ui_upgrade/constants/colors.dart'; 
+import 'package:voice_crm_ui_upgrade/screens/voice_notes_screen.dart'; 
+import 'dart:io' show Platform; 
 
 class MainTabsScreen extends StatefulWidget {
   const MainTabsScreen({super.key});
