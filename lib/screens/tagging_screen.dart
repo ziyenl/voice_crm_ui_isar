@@ -2,16 +2,16 @@
 
 import 'package:flutter/material.dart';
 import 'package:voice_crm_ui_upgrade/types/types.dart';
-import 'package:voice_crm_ui_upgrade/widgets/logo.dart'; // Import your Logo widget
+import 'package:voice_crm_ui_upgrade/widgets/logo.dart'; 
 import 'package:voice_crm_ui_upgrade/widgets/tag_badge.dart';
 import 'package:voice_crm_ui_upgrade/widgets/tag_form.dart';
 import 'package:voice_crm_ui_upgrade/constants/layout.dart';
 import 'package:voice_crm_ui_upgrade/constants/colors.dart';
-import 'package:voice_crm_ui_upgrade/data/mock_data.dart'; // Make sure this is updated for Tag type
+import 'package:voice_crm_ui_upgrade/data/mock_data.dart'; 
 import 'package:voice_crm_ui_upgrade/constants/app_shadows.dart';
-import 'package:flutter_animate/flutter_animate.dart'; // For animations
-import 'package:font_awesome_flutter/font_awesome_flutter.dart'; // For Plus icon
-import 'package:isar/isar.dart'; // <--- Add this import for Id type
+import 'package:flutter_animate/flutter_animate.dart'; 
+import 'package:font_awesome_flutter/font_awesome_flutter.dart'; 
+import 'package:isar/isar.dart'; 
 
 class TaggingScreen extends StatefulWidget {
   const TaggingScreen({super.key});
@@ -21,14 +21,12 @@ class TaggingScreen extends StatefulWidget {
 }
 
 class _TaggingScreenState extends State<TaggingScreen> {
-  // Use a mutable list for state management
   List<Tag> _allTags = [];
-  Tag? _editingTag; // Tag currently being edited, if any
+  Tag? _editingTag; 
 
   @override
   void initState() {
     super.initState();
-    // Initialize tags with a copy of mock data
     _allTags = List.from(mockTags);
     _allTags.sort(
       (a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()),
@@ -43,7 +41,7 @@ class _TaggingScreenState extends State<TaggingScreen> {
 
   void _handleAddTag() {
     setState(() {
-      _editingTag = null; // Clear any existing editing state
+      _editingTag = null; 
     });
     _openTagForm();
   }
@@ -55,9 +53,6 @@ class _TaggingScreenState extends State<TaggingScreen> {
     _openTagForm();
   }
 
-  // --- CHANGE THIS LINE ---
-  // Change the type of tagId from String to int (Id)
-  // Changed tagId type to int (Isar.Id is a typedef for int)
   void _handleDeleteTag(int tagId) {
     setState(() {
       _allTags.removeWhere((tag) => tag.id == tagId);
@@ -77,69 +72,27 @@ class _TaggingScreenState extends State<TaggingScreen> {
   //       _allTags.add(tag);
   //       _showSnackBar('Tag "${tag.name}" created!');
   //     }
-  //     _allTags.sort((a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase())); // Keep sorted
+  //     _allTags.sort((a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase())); 
   //   });
-  //   Navigator.of(context).pop(); // Close the bottom sheet
+  //   Navigator.of(context).pop(); 
   // }
 
   void _handleSaveTag(Tag tag) {
-    // 'tag' now contains the correct ID (or null for new)
     setState(() {
-      // Here, 'tag.id' will be the existing ID if it was an edit,
-      // or a default/0 if it was a new tag (before Isar assigns one).
-      // Since we are not directly interacting with Isar here,
-      // we assume the ID is meaningful for our mock data list.
-      
-      // Find the tag by its ID. Since Isar.autoIncrement defaults to 0 for new objects,
-      // and Isar assigns real IDs on `put()`, we need to handle this divergence
-      // for our *mock data list*.
       final int existingIndex = _allTags.indexWhere((t) => t.id == tag.id);
       if (existingIndex != -1) {
-        // Update existing tag
         _allTags[existingIndex] = tag;
         _showSnackBar('Tag "${tag.name}" updated!');
       } else {
-        // Creating new tag - For mock data, you might need to assign a temporary ID here
-        // if your Tag class doesn't auto-generate for mock.
-        // For real Isar, you wouldn't need to assign it here as Isar.put() handles it.
-        // For now, let's ensure the mock data setup provides unique IDs for new tags.
-        // If Tag.id is `Isar.autoIncrement`, the mock data handling of IDs becomes crucial.
-        // If you are transitioning to Isar, mock data handling of IDs might diverge.
-
-        // For the current mock data setup (not Isar), where you are manually
-        // adding to a list, you might need to give it a temporary ID if it's new.
-        // This creates a slight discrepancy between mock and real Isar behavior
-        // for ID assignment.
-
-        // Creating new tag for the mock list.
-        // We need to assign a temporary unique ID for the mock list,
-        // because Tag.create() doesn't set it and Isar won't auto-increment
-        // until you actually save it to an Isar database.
         final int newMockId = DateTime.now().millisecondsSinceEpoch;
 
-        // Create a new Tag instance with the mock ID.
-        // We can't directly assign to `tag.id` because it's `final Id` for Isar's `Id id = Isar.autoIncrement;`
-        // or a `late` field initialized by the constructor or `Tag()`.
-
-        
-        // Tag tagToAdd = tag;
-        // if (tag.id == Isar.autoIncrement || tag.id == 0) {
-        //   // Assuming 0 or Isar.autoIncrement means new
-        //   tagToAdd = Tag(
-        //     // Create a new instance with a temporary mock ID
-        //     id: DateTime.now().millisecondsSinceEpoch, // A simple mock ID
-        //     name: tag.name,
-        //     color: tag.color,
-        //     type: tag.type,
-        //   );
-        // }
 
         // So we create a new Tag object for our mock list.
         final Tag tagWithMockId = Tag.create(
           name: tag.name,
           color: tag.color,
           type: tag.type,
-        )..id = newMockId; // Manually assign the mock ID to the field
+        )..id = newMockId; 
 
         _allTags.add(tagWithMockId);
         _showSnackBar('Tag "${tagWithMockId.name}" created!');
@@ -155,36 +108,33 @@ class _TaggingScreenState extends State<TaggingScreen> {
     showModalBottomSheet(
       context: context,
       isScrollControlled:
-          true, // Allows the sheet to take full height if needed by keyboard
+          true, 
       backgroundColor:
           Colors
-              .transparent, // Make background transparent for modal-like effect
+              .transparent, 
       builder: (context) {
         return GestureDetector(
-          // Allow tapping outside to dismiss (similar to RN modal)
           onTap: () => Navigator.of(context).pop(),
           child: Container(
-            // --- MODIFIED CODE HERE ---
-            // Removed 'color' property and moved it inside a BoxDecoration
             decoration: BoxDecoration(
               color: Colors.black.withOpacity(
                 0.5,
-              ), // <--- Color now inside BoxDecoration
-            ), // Modal overlay effect
+              ), 
+            ), 
             alignment: Alignment.center,
             child: GestureDetector(
-              onTap: () {}, // Prevent tapping content from closing modal
+              onTap: () {}, 
               child: Container(
-                width: MediaQuery.of(context).size.width * 0.9, // 90% width
+                width: MediaQuery.of(context).size.width * 0.9, 
                 decoration: BoxDecoration(
                   color: AppColors.white,
                   borderRadius: BorderRadius.circular(Layout.borderRadiusLg),
                   boxShadow: [
-                    AppShadows.lg, // Use the defined large shadow
+                    AppShadows.lg, 
                   ],
                 ),
                 child: Column(
-                  mainAxisSize: MainAxisSize.min, // Wrap content height
+                  mainAxisSize: MainAxisSize.min, 
                   children: [
                     Padding(
                       padding: const EdgeInsets.all(Layout.spacingMd),
@@ -207,7 +157,7 @@ class _TaggingScreenState extends State<TaggingScreen> {
                           () =>
                               Navigator.of(
                                 context,
-                              ).pop(), // Cancel closes modal
+                              ).pop(), 
                       initialTag: _editingTag,
                     ),
                   ],
@@ -245,8 +195,8 @@ class _TaggingScreenState extends State<TaggingScreen> {
                 ),
               )
               : Wrap(
-                spacing: Layout.spacingXs, // Horizontal spacing
-                runSpacing: Layout.spacingXs, // Vertical spacing
+                spacing: Layout.spacingXs, 
+                runSpacing: Layout.spacingXs, 
                 children:
                     tagList.asMap().entries.map((entry) {
                       final int index = entry.key;
@@ -254,12 +204,12 @@ class _TaggingScreenState extends State<TaggingScreen> {
                       return Animate(
                         effects: [
                           FadeEffect(
-                            delay: (index * 50).ms, // Staggered animation
+                            delay: (index * 50).ms, 
                             duration: 300.ms,
                             curve: Curves.easeOutCubic,
                           ),
                           SlideEffect(
-                            begin: const Offset(0, 0.5), // Slide up slightly
+                            begin: const Offset(0, 0.5), 
                             end: Offset.zero,
                             delay: (index * 50).ms,
                             duration: 300.ms,
@@ -269,12 +219,12 @@ class _TaggingScreenState extends State<TaggingScreen> {
                         child: TagBadge(
                           key: ValueKey(
                             tag.id,
-                          ), // Important for list efficiency
+                          ), 
                           label: tag.name,
                           color: tag.color,
                           onRemove: () => _handleDeleteTag(tag.id),
                           onPress: () => _handleEditTag(tag),
-                          small: false, // Default size for these badges
+                          small: false, 
                         ),
                       );
                     }).toList(),
@@ -293,21 +243,18 @@ class _TaggingScreenState extends State<TaggingScreen> {
         _allTags.where((tag) => tag.type == 'content').toList();
 
     return Scaffold(
-      backgroundColor: AppColors.neutral50, // Match RN background
+      backgroundColor: AppColors.neutral50, 
       body: SafeArea(
-        // Equivalent to React Native SafeAreaView
         child: Column(
           children: [
-            // Header (similar to RN's header View)
             Container(
               padding: const EdgeInsets.all(Layout.spacingMd),
-              // color: AppColors.white, // Use AppColors.white
               decoration: BoxDecoration(
                 border: Border(
                   bottom: BorderSide(color: AppColors.neutral200, width: 1),
                 ),
               ),
-              child: const Logo(size: LogoSize.large), // Your Logo widget
+              child: const Logo(size: LogoSize.large), 
             ),
             Expanded(
               child: SingleChildScrollView(
@@ -315,7 +262,6 @@ class _TaggingScreenState extends State<TaggingScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Title and Add Button
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -361,19 +307,17 @@ class _TaggingScreenState extends State<TaggingScreen> {
                       ],
                     ),
                     const SizedBox(height: Layout.spacingSm),
-                    // Description
                     Text(
                       'Create and manage tags to organize your voice notes. Tags can be applied to notes for easier filtering and searching.',
                       style: TextStyle(
                         fontFamily: 'Inter-Regular',
                         fontSize: 16,
                         color: AppColors.neutral600,
-                        height: 1.4, // lineHeight equivalent
+                        height: 1.4, 
                       ),
                     ),
                     const SizedBox(height: Layout.spacingLg),
 
-                    // Tag sections
                     _buildTagSection('Client Tags', clientTags),
                     _buildTagSection('Content Tags', contentTags),
                   ],
