@@ -1,19 +1,17 @@
 // widgets/VoiceNoteCard.dart
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart'; // For HapticFeedback
-import 'package:isar/isar.dart'; // <--- Add this import for Id type (which is an alias for int) is recognized.
+import 'package:flutter/services.dart'; 
+import 'package:isar/isar.dart'; 
 import '../types/types.dart';
 import '../constants/layout.dart';
 import '../constants/colors.dart';
-import 'tag_row.dart'; // Assuming TagRow is in the same directory
-import './VoiceNoteMenu.dart'; // Assuming VoiceNoteMenu is in the same directory
-import 'package:intl/intl.dart'; // Required for date formatting
+import 'tag_row.dart'; 
+import './VoiceNoteMenu.dart'; 
+import 'package:intl/intl.dart'; 
 
-/// A card widget to display a single voice note, with expand/collapse and menu options.
 class VoiceNoteCard extends StatefulWidget {
   final VoiceNote voiceNote;
-  // --- CHANGE 1: Change parameter type from String to int ---
   final Function(VoiceNoteAction action, int noteId) onAction;
 
   const VoiceNoteCard({
@@ -36,22 +34,19 @@ class _VoiceNoteCardState extends State<VoiceNoteCard> with SingleTickerProvider
   @override
   void initState() {
     super.initState();
-    // Initialize AnimationController for card scale and shadow effects
     _animationController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 250), // Duration for card scale animation
-      reverseDuration: const Duration(milliseconds: 250), // Duration for reverse animation
+      duration: const Duration(milliseconds: 250), 
+      reverseDuration: const Duration(milliseconds: 250), 
     );
 
-    // Define the scale animation from 1.0 to 1.02
     _scaleAnimation = Tween<double>(begin: 1.0, end: 1.02).animate(
       CurvedAnimation(
         parent: _animationController,
-        curve: Curves.easeOutCubic, // Mimic a spring-like ease-out curve
+        curve: Curves.easeOutCubic, 
       ),
     );
-
-    // Define the shadow opacity animation
+    
     _shadowOpacityAnimation = Tween<double>(begin: 0.08, end: 0.15).animate(
       CurvedAnimation(
         parent: _animationController,
@@ -66,26 +61,23 @@ class _VoiceNoteCardState extends State<VoiceNoteCard> with SingleTickerProvider
     super.dispose();
   }
 
-  /// Formats the duration from seconds into "MM:SS" format.
   String _formatDuration(int seconds) {
     final minutes = seconds ~/ 60;
     final remainingSeconds = seconds % 60;
     return '${minutes}:${remainingSeconds.toString().padLeft(2, '0')}';
   }
 
-  /// Formats a DateTime object into a localized date string (e.g., "Jun 6, 2025").
   String _formatDate(DateTime date) {
-    return DateFormat.yMMMd().format(date); // Uses intl package for formatting
+    return DateFormat.yMMMd().format(date); 
   }
 
-  /// Handles the tap event on the voice note card, expanding or collapsing it.
   void _handleCardPress() {
     if (widget.voiceNote.isTranscribed) {
-      HapticFeedback.lightImpact(); // Provide haptic feedback on tap
+      HapticFeedback.lightImpact(); 
       setState(() {
         _expanded = !_expanded;
       });
-      // Control the animation based on the expanded state
+    
       if (_expanded) {
         _animationController.forward();
       } else {
@@ -94,18 +86,17 @@ class _VoiceNoteCardState extends State<VoiceNoteCard> with SingleTickerProvider
     }
   }
 
-  /// Toggles the visibility of the VoiceNoteMenu modal.
   void _handleMenuToggle() {
-    HapticFeedback.lightImpact(); // Provide haptic feedback
+    HapticFeedback.lightImpact(); 
     showDialog(
       context: context,
-      barrierColor: Colors.black54, // Overlay background color for the modal
+      barrierColor: Colors.black54, 
       builder: (BuildContext context) {
         return VoiceNoteMenu(
-          onClose: () => Navigator.of(context).pop(), // Closes the dialog
+          onClose: () => Navigator.of(context).pop(), 
           onAction: (action) {
-            Navigator.of(context).pop(); // Close dialog first
-            widget.onAction(action, widget.voiceNote.id); // Then perform the action
+            Navigator.of(context).pop(); 
+            widget.onAction(action, widget.voiceNote.id); 
           },
           voiceNote: widget.voiceNote,
         );
@@ -116,7 +107,7 @@ class _VoiceNoteCardState extends State<VoiceNoteCard> with SingleTickerProvider
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
-      animation: _animationController, // Rebuilds when animation values change
+      animation: _animationController, 
       builder: (context, child) {
         return Container(
           margin: EdgeInsets.only(
@@ -128,7 +119,6 @@ class _VoiceNoteCardState extends State<VoiceNoteCard> with SingleTickerProvider
             color: Colors.white,
             borderRadius: Layout.borderRadius.md,
             boxShadow: [
-              // Apply dynamic shadow based on animation value
               BoxShadow(
                 color: Colors.black.withOpacity(_shadowOpacityAnimation.value),
                 blurRadius: 10,
@@ -137,17 +127,16 @@ class _VoiceNoteCardState extends State<VoiceNoteCard> with SingleTickerProvider
             ],
           ),
           child: Transform.scale(
-            scale: _scaleAnimation.value, // Apply dynamic scale based on animation value
+            scale: _scaleAnimation.value, 
             child: Material(
-              color: Colors.transparent, // Required for InkWell's splash effect
+              color: Colors.transparent,
               borderRadius: Layout.borderRadius.md,
               child: InkWell(
                 borderRadius: Layout.borderRadius.md,
-                onTap: _handleCardPress, // Handle card tap for expansion
+                onTap: _handleCardPress, 
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Card Header: Tags and Menu button
                     Padding(
                       padding: EdgeInsets.only(
                         left: Layout.spacing.md,
@@ -162,13 +151,11 @@ class _VoiceNoteCardState extends State<VoiceNoteCard> with SingleTickerProvider
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                // --- CHANGE 3: Convert IsarLinks<Tag> to List<Tag> using .toList() ---
                                 TagRow(tags: widget.voiceNote.clientTags.toList(), small: true),
                                 TagRow(tags: widget.voiceNote.contentTags.toList(), small: true),
                               ],
                             ),
                           ),
-                          // Menu button
                           GestureDetector(
                             onTap: _handleMenuToggle,
                             child: Padding(
@@ -183,7 +170,6 @@ class _VoiceNoteCardState extends State<VoiceNoteCard> with SingleTickerProvider
                         ],
                       ),
                     ),
-                    // Card Body: Title, Metadata, Status Badges
                     Padding(
                       padding: EdgeInsets.symmetric(
                         horizontal: Layout.spacing.md,
@@ -191,7 +177,6 @@ class _VoiceNoteCardState extends State<VoiceNoteCard> with SingleTickerProvider
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          // Title and Favorite Star
                           Row(
                             children: [
                               Expanded(
@@ -209,7 +194,7 @@ class _VoiceNoteCardState extends State<VoiceNoteCard> with SingleTickerProvider
                                 Padding(
                                   padding: EdgeInsets.only(left: Layout.spacing.xs),
                                   child: Icon(
-                                    Icons.star, // Material Icon equivalent to Star
+                                    Icons.star, 
                                     size: 16,
                                     color: AppColors.warning500,
                                   ),
@@ -217,14 +202,13 @@ class _VoiceNoteCardState extends State<VoiceNoteCard> with SingleTickerProvider
                             ],
                           ),
                           SizedBox(height: Layout.spacing.xs),
-                          // Metadata (Duration, File Path, Date)
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Row(
                                 children: [
                                   Icon(
-                                    Icons.access_time, // Material Icon equivalent to Clock
+                                    Icons.access_time, 
                                     size: 14,
                                     color: AppColors.neutral500,
                                   ),
@@ -243,7 +227,7 @@ class _VoiceNoteCardState extends State<VoiceNoteCard> with SingleTickerProvider
                               Row(
                                 children: [
                                   Icon(
-                                    Icons.description, // Material Icon equivalent to File
+                                    Icons.description, 
                                     size: 14,
                                     color: AppColors.neutral500,
                                   ),
@@ -257,7 +241,7 @@ class _VoiceNoteCardState extends State<VoiceNoteCard> with SingleTickerProvider
                                         color: AppColors.neutral600,
                                       ),
                                       maxLines: 1,
-                                      overflow: TextOverflow.ellipsis, // Truncate long file paths
+                                      overflow: TextOverflow.ellipsis, 
                                     ),
                                   ),
                                 ],
@@ -303,10 +287,10 @@ class _VoiceNoteCardState extends State<VoiceNoteCard> with SingleTickerProvider
                                     borderRadius: Layout.borderRadius.full,
                                   ),
                                   child: Row(
-                                    mainAxisSize: MainAxisSize.min, // Keep row tight to its children
+                                    mainAxisSize: MainAxisSize.min, 
                                     children: [
                                       Icon(
-                                        Icons.cloud_upload, // Material Icon equivalent to Upload
+                                        Icons.cloud_upload, 
                                         size: 12,
                                         color: AppColors.primary700,
                                       ),
@@ -327,9 +311,7 @@ class _VoiceNoteCardState extends State<VoiceNoteCard> with SingleTickerProvider
                         ],
                       ),
                     ),
-                    // Transcription Section (Animated)
                     if (widget.voiceNote.isTranscribed)
-                      // AnimatedSize animates the height change
                       AnimatedSize(
                         duration: const Duration(milliseconds: 250),
                         curve: Curves.easeOutCubic,
@@ -338,16 +320,15 @@ class _VoiceNoteCardState extends State<VoiceNoteCard> with SingleTickerProvider
                             parent: _animationController,
                             curve: Curves.easeOutCubic,
                           ),
-                          axisAlignment: -1.0, // Ensures content expands downwards
+                          axisAlignment: -1.0, 
                           child: FadeTransition(
                             opacity: CurvedAnimation(
                               parent: _animationController,
                               curve: Curves.easeOutCubic,
                             ),
                             child: Visibility(
-                              // Only build the transcription content if expanded
                               visible: _expanded,
-                              maintainState: true, // Keep state even when invisible
+                              maintainState: true, 
                               child: Container(
                                 padding: EdgeInsets.all(Layout.spacing.md),
                                 decoration: BoxDecoration(
@@ -376,7 +357,7 @@ class _VoiceNoteCardState extends State<VoiceNoteCard> with SingleTickerProvider
                                       style: TextStyle(
                                         fontFamily: 'Inter-Regular',
                                         fontSize: 15,
-                                        height: 1.4, // Mimics lineHeight: 22 / 15
+                                        height: 1.4, 
                                         color: AppColors.neutral700,
                                       ),
                                     ),
